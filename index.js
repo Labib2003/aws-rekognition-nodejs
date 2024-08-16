@@ -27,7 +27,7 @@ router.post("/save", upload.single("image"), function (req, res) {
           if (data.found)
             return res.json({
               success: true,
-              message: "Image saved successfully",
+              message: "User data saved successfully",
             });
           else res.json({ success: false, data: data });
         });
@@ -41,7 +41,7 @@ router.post("/save", upload.single("image"), function (req, res) {
       if (taken)
         return res.json({
           success: false,
-          message: `This empId: ${req.body.empid} is already taken`,
+          message: "Employee id already exists",
         });
 
       console.log("trigger");
@@ -57,7 +57,7 @@ router.post("/save", upload.single("image"), function (req, res) {
           await prisma.takenIds.create({ data: { empId: req.body.empid } });
           return res.json({
             success: true,
-            message: "Image saved successfully",
+            message: "User data saved successfully",
           });
         } else res.json({ success: false, data: data });
       });
@@ -79,7 +79,7 @@ router.post("/checkmatch", upload.single("image"), function (req, res) {
   //calling method API AWS to recoknition face.
   rekognitionService.search_face(obj, function (data) {
     if (!data.ExternalImageId)
-      res.json({ success: false, message: "No match found" });
+      res.json({ success: false, message: "Image not matched" });
     else
       res.json({
         success: true,
