@@ -14,8 +14,9 @@ datasource db {
 }
 
 model TakenIds {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  empId String @unique
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  empId   String   @unique
+  faceIds String[]
 
   @@map("taken emp ids")
 }

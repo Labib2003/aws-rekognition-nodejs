@@ -1,7 +1,8 @@
 import multer from "multer";
 
 const storage = multer.memoryStorage();
-const fileFilter = (req, file, cb) => {
+
+const fileFilter = (_req, file, cb) => {
   if (["image"].includes(file.mimetype.split("/")[0])) {
     cb(null, true);
   } else {

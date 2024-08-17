@@ -1,9 +1,8 @@
-const globalErrorHandler = (error, req, res, next) => {
+const globalErrorHandler = (error, _req, res, next) => {
   console.log("Global error handler: ", error);
 
   let statusCode = 500;
   let message = error?.message || "Something went wrong";
-  let errors = [];
 
   if (error instanceof Error) {
     message = error?.message;
@@ -12,7 +11,6 @@ const globalErrorHandler = (error, req, res, next) => {
   res.status(statusCode).json({
     success: false,
     message,
-    errors,
   });
   next();
 };
