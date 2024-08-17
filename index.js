@@ -5,10 +5,10 @@ import globalErrorHandler from "./globalErrorHandler.js";
 import prisma from "./prisma.js";
 const router = express.Router();
 
-router.post("/save", upload.single("image"), function (req, res) {
+router.post("/save", upload.single("image"), function(req, res) {
   const base64Image = req.file.buffer.toString("base64");
 
-  rekognitionService.search_face({ photo: base64Image }, async function (data) {
+  rekognitionService.search_face({ photo: base64Image }, async function(data) {
     if (data.ExternalImageId) {
       // exists
       if (data.ExternalImageId !== req.body.empid)
@@ -23,7 +23,7 @@ router.post("/save", upload.single("image"), function (req, res) {
         };
 
         //calling method API AWS to index face.
-        rekognitionService.indexFaces(obj, function (data) {
+        rekognitionService.indexFaces(obj, function(data) {
           if (data.found)
             return res.json({
               success: true,
@@ -52,7 +52,7 @@ router.post("/save", upload.single("image"), function (req, res) {
       };
 
       //calling method API AWS to index face.
-      rekognitionService.indexFaces(obj, async function (data) {
+      rekognitionService.indexFaces(obj, async function(data) {
         if (data.found) {
           await prisma.takenIds.create({ data: { empId: req.body.empid } });
           return res.json({
@@ -69,7 +69,7 @@ router.post("/save", upload.single("image"), function (req, res) {
    Recive - Photo in format base 64.
    Return - Return result of reconize.
 */
-router.post("/checkmatch", upload.single("image"), function (req, res) {
+router.post("/checkmatch", upload.single("image"), function(req, res) {
   const base64Image = req.file.buffer.toString("base64");
   //recive param photo in base64.
   const obj = {
@@ -77,14 +77,14 @@ router.post("/checkmatch", upload.single("image"), function (req, res) {
   };
 
   //calling method API AWS to recoknition face.
-  rekognitionService.search_face(obj, function (data) {
+  rekognitionService.search_face(obj, function(data) {
     if (!data.ExternalImageId)
       res.json({ success: false, message: "Image not matched" });
     else
       res.json({
         success: true,
         message: "Match found",
-        data: { empId: data.ExternalImageId },
+        empId: data.ExternalImageId,
       });
   });
 });
