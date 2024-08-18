@@ -1,3 +1,5 @@
+import ApiError from "./apiError.js";
+
 const globalErrorHandler = (error, _req, res, next) => {
   console.log("Global error handler: ", error);
 
@@ -6,6 +8,10 @@ const globalErrorHandler = (error, _req, res, next) => {
 
   if (error instanceof Error) {
     message = error?.message;
+  }
+  if (error instanceof ApiError) {
+    statusCode = error.statusCode;
+    message = error.message;
   }
 
   res.status(statusCode).json({
